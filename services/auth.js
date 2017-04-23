@@ -1,4 +1,7 @@
 'use strict';
+const Promise = require('bluebird');
+const bcrypt = require('bcryptjs');
+
 module.exports = (userRepository, roleRepository, errors) => {
     return {
         login: login,
@@ -37,14 +40,12 @@ module.exports = (userRepository, roleRepository, errors) => {
 
     function register(data) {
         return new Promise((resolve, reject) => {
-            if (data.password)
                 bcrypt.hash(data.password, 5, function (err, hash) {
-                    console.error("YES");
                     if (err) {
                         throw err;
                     }
                     let user = {
-                        id: Math.floor(Math.random() * 9999999999999 + 1000000000000),
+                        id: Math.floor(Math.random() * 999999 + 10000000),
                         email: data.email,
                         password: hash,
                         firstname: data.firstname,
@@ -56,35 +57,10 @@ module.exports = (userRepository, roleRepository, errors) => {
                         roleRepository.findOne({where: {name: "user"}})
                     ])
                         .spread((user, role) => {
-                            user.addRole(role);
+                            role.addUser(user);
                             resolve([user.id, role.name]);
                         }).catch(reject);
                 });
-
-            else
-                Promise.all([login(data)]).spread((user) => {
-                    if (user)
-                        resolve(user);
-                    else {
-                        let user = {
-                            id: data.id,
-                            firstname: data.firstname,
-                            lastname: data.lastname
-                        };
-                        Promise.all([
-                            userRepository.create(user),
-                            roleRepository.findOne({where: {name: "user"}})
-                        ])
-                            .spread((user, role) => {
-                                user.addRole(role);
-                                resolve([user.id, role.name]);
-                            })
-                            .catch(reject);
-                    }
-
-                }).catch(reject);
-
-
         });
     }
 

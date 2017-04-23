@@ -12,7 +12,6 @@ module.exports = (Sequelize, config) => {
 
     const User = require('../models/user')(Sequelize, sequelize);
     const Role = require('../models/role')(Sequelize, sequelize);
-    const UserRole = require('../models/userRole')(Sequelize, sequelize);
 
     Mark.hasMany(Am);
     Am.belongsTo(Mark);
@@ -31,15 +30,12 @@ module.exports = (Sequelize, config) => {
 
     Jacked.hasOne(Am);
     Am.belongsTo(Jacked);
-  //  Jacked.belongsTo(Am);
 
     Jacked.hasOne(Driver);
     Driver.belongsTo(Jacked);
 
-    User.belongsToMany(Role,
-        { through: UserRole });
-    Role.belongsToMany(User,
-        { through: UserRole });
+    User.belongsTo(Role);
+    Role.hasMany(User);
 
     return {
         user: User,

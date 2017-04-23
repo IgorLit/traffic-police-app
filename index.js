@@ -41,6 +41,6 @@ app.set('port', (process.env.PORT || 3000));
 dbcontext.sequelize
     .sync()
     .then(() => {
-        app.listen(app.get('port'), () => console.log(`Running on http://localhost: ${app.get('port')}`));
+        app.listen(app.get('port'), () => console.log(`Running on http://localhost:${app.get('port')}`));
     })
     .catch((err) => console.log(err));

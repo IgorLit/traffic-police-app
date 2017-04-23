@@ -6,7 +6,7 @@ module.exports = (authService, config, errors) => {
         let method = req.method;
 
         authService.checkPermissions(userId, path)
-            .then(() => next())
+            .then(next)
             .catch(() => res.error(errors.accessDenied));
     };
 };

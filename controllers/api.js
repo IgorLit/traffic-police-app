@@ -6,7 +6,8 @@ module.exports = (userService, roleService, authService, amService, driverServic
 
     const userController = require('./user')(userService, promiseHandler);
     const roleController = require('./role')(roleService, promiseHandler);
-    const authController = require('./auth')(authService, config);
+    const authController = require('./users')(authService, config);
+    const sessionController = require('./session')(authService, config);
 
     const amController = require('./am')(amService, promiseHandler);
     const driverController = require('./driver')(driverService, promiseHandler);
@@ -21,6 +22,8 @@ module.exports = (userService, roleService, authService, amService, driverServic
     router.use('/firms', firmController);
     router.use('/countries', countryController);
     router.use('/marks', markController);
+    router.use('/session', sessionController);
+    router.use('/users', authController);
 
     return router;
 };
