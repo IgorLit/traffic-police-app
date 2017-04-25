@@ -44,72 +44,12 @@
 
 
     <script type="text/javascript" language="javascript" src="javascripts/notify.js"></script>
-    <script>
 
-        var editor; // use a global for the submit and return data rendering in the examples
-        $(document).ready(function () {
-            editor = new $.fn.dataTable.Editor({
-                ajax: {
-                    edit: {
-                        type: 'PUT',
-                        url: '/api/users/'
-                    },
-                    remove: {
-                        type: 'DELETE',
-                        url: '/api/users/'
-                    }
-                },
-                table: "#example",
-                idSrc: 'id',
-                fields: [{
-                    label: "Identifier:",
-                    name: "id"
-                }, {
-                    label: "Email:",
-                    name: "email"
-                }, {
-                    label: "Name:",
-                    name: "firstname"
-                }, {
-                    label: "Surname:",
-                    name: "lastname"
-                },{
-                    label:"Role",
-                    name:"role"
-                }
-                ]
-            });
-
-            var table = $('#example').DataTable({
-                dom: "Bfrtlip",
-                "serverSide": true,
-                ajax: "/api/users",
-
-                columns: [
-
-                    {data: "id", "visible": true},
-                    {data: "email"},
-                    {data: "firstname"},
-                    {data: "lastname"},
-                    {data: "role", "orderable": false}
-                ],
-                select: true,
-                buttons: [
-                    {extend: 'edit', editor: editor},
-                    {extend: 'remove', editor: editor},
-                ]
-            });
-            editor.on( 'submitSuccess', function ( e, type ) {
-                $.notify("Success","success");
-            } );
-
-        });
-
-    </script>
 </head>
 <body>
-<H1>General</H1>
+
 <div class="row">
+    <H1>General</H1>
     <div class="list-group col-lg-2 col-md-2 col-sm-2">
         <a class="list-group-item" href="am.html">AM</a></br></li>
         <a class="list-group-item" href="driver.html">Driver</a></br>
@@ -120,7 +60,8 @@
         <a id="logout" class="list-group-item list-group-item-danger" style="cursor: pointer">Logout</a></br>
     </div>
 
-    <div class="col-lg-10">
+    <div id="adminpanel" class="col-lg-10">
+        <span> <h2 style="margin-top: 0">Admin Panel</h2> </span>
         <table id="example" class="display" cellspacing="0" width="100%">
             <thead>
             <tr>
@@ -159,6 +100,71 @@
     });
 
 </script>
+<script>
+    if (Base64.decode(getCookie('roleName')) !== 'admin') {
+        $("#adminpanel").hide();
+    }
+    else {
+        var editor; // use a global for the submit and return data rendering in the examples
+        $(document).ready(function () {
+            editor = new $.fn.dataTable.Editor({
+                ajax: {
+                    edit: {
+                        type: 'PUT',
+                        url: '/api/users/'
+                    },
+                    remove: {
+                        type: 'DELETE',
+                        url: '/api/users/'
+                    }
+                },
+                table: "#example",
+                idSrc: 'id',
+                fields: [{
+                    label: "Identifier:",
+                    name: "id"
+                }, {
+                    label: "Email:",
+                    name: "email"
+                }, {
+                    label: "Name:",
+                    name: "firstname"
+                }, {
+                    label: "Surname:",
+                    name: "lastname"
+                }, {
+                    label: "Role",
+                    name: "role"
+                }
+                ]
+            });
 
+            var table = $('#example').DataTable({
+                dom: "Bfrtlip",
+                "serverSide": true,
+                ajax: "/api/users",
+
+                columns: [
+
+                    {data: "id", "visible": true},
+                    {data: "email"},
+                    {data: "firstname"},
+                    {data: "lastname"},
+                    {data: "role", "orderable": false}
+                ],
+                select: true,
+                buttons: [
+                    {extend: 'edit', editor: editor},
+                    {extend: 'remove', editor: editor},
+                ]
+            });
+            editor.on('submitSuccess', function (e, type) {
+                $.notify("Success", "success");
+            });
+
+        });
+    }
+
+</script>
 
 </html>
