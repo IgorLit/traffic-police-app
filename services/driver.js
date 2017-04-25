@@ -26,7 +26,7 @@ module.exports = (DriverRepository, errors) => {
                     var orderColumn = options.columns[orderColumnNumber].data;
                 else
                     var orderColumn = "id";
-                DriverRepository.findAndCountAll({
+               return DriverRepository.findAndCountAll({
                         limit: limit,
                         offset: offset,
                         order: [[orderColumn, options.order[0].dir.toUpperCase()]],
@@ -73,7 +73,7 @@ module.exports = (DriverRepository, errors) => {
                             "draw":options.draw,
                             "recordsTotal": result.count,
                             "recordsFiltered": result.count});
-                }).catch(reject);
+                })
             });
         }
 
@@ -94,7 +94,7 @@ module.exports = (DriverRepository, errors) => {
               return  self.baseCreate(driver)
                     .then((result)=>{
                         resolve({"data":result})
-                    }).catch(reject);
+                    })
             });
         }
 
@@ -114,8 +114,7 @@ module.exports = (DriverRepository, errors) => {
                     DRIVER_CATEGORY: data.DRIVER_CATEGORY
                 };
 
-               return self.baseUpdate(data.id, driver)
-                    .then(resolve).catch(reject);
+               return self.baseUpdate(data.id, driver);
             });
         }
 

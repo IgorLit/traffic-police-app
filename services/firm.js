@@ -26,7 +26,7 @@ module.exports = (firmRepository, errors) => {
                     var orderColumn = options.columns[orderColumnNumber].data;
                 else
                     var orderColumn = "id";
-                firmRepository.findAndCountAll({
+               return firmRepository.findAndCountAll({
                         limit: limit,
                         offset: offset,
                         order: [[orderColumn, options.order[0].dir.toUpperCase()]],
@@ -57,7 +57,7 @@ module.exports = (firmRepository, errors) => {
                             "draw":options.draw,
                             "recordsTotal": result.count,
                             "recordsFiltered": result.count});
-                }).catch(reject);
+                })
             });
         }
 
@@ -68,10 +68,10 @@ module.exports = (firmRepository, errors) => {
                     FIRM_NAME: data.FIRM_NAME
                 };
 
-                self.baseCreate(entity)
+               return self.baseCreate(entity)
                     .then((result)=>{
                     resolve({"data":result})
-                }).catch(reject);
+                })
             });
         }
 
@@ -84,8 +84,7 @@ module.exports = (firmRepository, errors) => {
                     FIRM_NAME: data.FIRM_NAME
                 };
 
-                self.baseUpdate(data.id, entity)
-                    .then(resolve).catch(reject);
+              return  self.baseUpdate(data.id, entity);
             });
         }
 

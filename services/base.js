@@ -65,13 +65,8 @@ function BaseService(repository, errors) {
     }
 
     function baseUpdate(id, data) {
-        return new Promise((resolve, reject) => {
-            repository.update(data, { where: { id: id } })
-                .then(() => {
-                        return self.read(id);
-                })
-                .then(resolve).catch(reject);
-        });
+        return new Promise((resolve, reject) => repository.update(data, { where: { id: id } })
+                .then(() => self.read(id)));
     }
 
     function del(id) {

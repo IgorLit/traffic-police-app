@@ -6,7 +6,7 @@ module.exports = (userService, roleService, authService, amService, driverServic
 
     const userController = require('./user')(userService, promiseHandler);
     const roleController = require('./role')(roleService, promiseHandler);
-    const authController = require('./users')(authService, config);
+    const authController = require('./users')(authService,userService, config);
     const sessionController = require('./session')(authService, config);
 
     const amController = require('./am')(amService, promiseHandler);

@@ -2,7 +2,7 @@
 
 const express = require('express');
 
-module.exports = (authService, config) => {
+module.exports = (authService,userService, config) => {
     const router = express.Router();
 
     router.post('/', (req, res) => { //records the entered information into database as a new /user/xxx
@@ -18,6 +18,20 @@ module.exports = (authService, config) => {
     router.get('/new', (req, res) => { // gets the webpage that has the registration form
         res.redirect("/register.html");
     });
+
+    router.get('/', (req, res) => {
+        userService.readChunk(req.query)
+            .then((users) => {
+                res.json(users)
+            })
+            .catch((err) => res.send({error: err.message}));
+    });
+
+    router.put('/', (req, res) => {
+        userService.update(req.body).then((result)=>res.json(result))
+            .catch((err) => res.send({error: err.message}));
+        });
+
 
     return router;
 };

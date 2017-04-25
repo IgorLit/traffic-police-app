@@ -147,7 +147,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                     driverRepository.findById(data.driver)
                 ]).spread((mark, driver) => {
                     if (!mark || !driver) {
-                        throw Error(`Error while creating object. ${mark ? 'Driver': 'Mark'} id doesen\'t not exist`);
+                        reject(`Error while creating object. ${mark ? 'Driver': 'Mark'} id doesen\'t not exist`);
                     }
                     return self.baseCreate(am)
                         .then((am) => new Promise.all([
@@ -156,8 +156,8 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                         am
                     ]));
                 }).spread((mark, driver, am) => {
-                    self.read(am.id).then(resolve)
-                }).catch(reject);
+                   return self.read(am.id).then(resolve)
+                });
             });
         }
 
@@ -175,7 +175,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                     AM_REGISTRATION_DATE: data.AM_REGISTRATION_DATE,
                     AM_BIRTHDATE: data.AM_BIRTHDATE
                 };
-                Promise.all([
+               return Promise.all([
                     self.baseUpdate(data.id, am),
                     markRepository.findById(data.mark),
                     driverRepository.findById(data.driver)
@@ -189,8 +189,8 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                         ]);
                     else return reject({message:'mark or driver not found'});
                 }).spread((am, mark, driver) => {
-                    self.read(am.id).then(resolve)
-                }).catch(reject);
+                  return  self.read(am.id);
+                })
             });
         }
     }

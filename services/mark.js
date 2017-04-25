@@ -1,7 +1,7 @@
 'use strict';
-module.exports = (markRepository,firmRepository,countryRepository, errors) => {
+module.exports = (markRepository, firmRepository, countryRepository, errors) => {
     const BaseService = require('./base');
-    const config =require('../config.json');
+    const config = require('../config.json');
     const Promise = require("bluebird");
     Object.setPrototypeOf(MarkService.prototype, BaseService.prototype);
 
@@ -12,27 +12,29 @@ module.exports = (markRepository,firmRepository,countryRepository, errors) => {
 
         self.create = create;
         self.update = update;
-        self.readChunk=readChunk;
-        self.read=read;
+        self.readChunk = readChunk;
+        self.read = read;
         function read(id) {
-            return new Promise((resolve,reject)=>{
-                markRepository.find({where:{
-                    id:id
-                },
-                    include:[
+            return new Promise((resolve, reject) => {
+                markRepository.find({
+                    where: {
+                        id: id
+                    },
+                    include: [
                         {
-                            model:countryRepository,
-                            attributes:["COUNTRY_NAME"]
-                        },{
-                            model:firmRepository,
-                            attributes:["FIRM_NAME"]
+                            model: countryRepository,
+                            attributes: ["COUNTRY_NAME"]
+                        }, {
+                            model: firmRepository,
+                            attributes: ["FIRM_NAME"]
                         }
-                    ]}).then((result)=>{
-                    result["COUNTRY"]=result["country.COUNTRY_NAME"];
-                    result["FIRM"]=result["firm.FIRM_NAME"];
+                    ]
+                }).then((result) => {
+                    result["COUNTRY"] = result["country.COUNTRY_NAME"];
+                    result["FIRM"] = result["firm.FIRM_NAME"];
                     delete  result["country.COUNTRY_NAME"];
                     delete  result["firm.FIRM_NAME"];
-                    resolve({"data":result})
+                    resolve({"data": result})
                 }).catch(reject);
             });
         }
@@ -46,10 +48,10 @@ module.exports = (markRepository,firmRepository,countryRepository, errors) => {
                 var searchKey = '%' + options.search.value + '%';
                 var orderColumnNumber = Number(options.order[0].column);
                 var orderColumn;
-                if(options.columns)
-                     orderColumn = options.columns[orderColumnNumber].data;
+                if (options.columns)
+                    orderColumn = options.columns[orderColumnNumber].data;
                 else
-                     orderColumn = "MARK_NAME";
+                    orderColumn = "MARK_NAME";
                 markRepository.findAndCountAll({
                         limit: limit,
                         offset: offset,
@@ -66,24 +68,24 @@ module.exports = (markRepository,firmRepository,countryRepository, errors) => {
 
                             ]
                         },
-                        include:[
+                        include: [
                             {
-                                model:countryRepository,
-                                attributes:["COUNTRY_NAME"]
-                            },{
-                            model:firmRepository,
-                                attributes:["FIRM_NAME"]
+                                model: countryRepository,
+                                attributes: ["COUNTRY_NAME"]
+                            }, {
+                                model: firmRepository,
+                                attributes: ["FIRM_NAME"]
                             }
                         ]
                     }
-                ).then((result)=>{
-                    for(var i=0;i<result.rows.length;i++){
-                        result.rows[i]["COUNTRY"]=result.rows[i]["country.COUNTRY_NAME"];
-                        result.rows[i]["FIRM"]=result.rows[i]["firm.FIRM_NAME"];
+                ).then((result) => {
+                    for (var i = 0; i < result.rows.length; i++) {
+                        result.rows[i]["COUNTRY"] = result.rows[i]["country.COUNTRY_NAME"];
+                        result.rows[i]["FIRM"] = result.rows[i]["firm.FIRM_NAME"];
                         delete  result.rows[i]["country.COUNTRY_NAME"];
                         delete  result.rows[i]["firm.FIRM_NAME"];
                     }
-                    if(options.search.value.length>0) {
+                    if (options.search.value.length > 0) {
 
                         resolve({
                             "data": result.rows,
@@ -119,24 +121,25 @@ module.exports = (markRepository,firmRepository,countryRepository, errors) => {
                     self.baseCreate(entity),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
-                ]).spread((mark,firm,country)=> {
+                ]).spread((mark, firm, country) => {
                     return new Promise.all([
                         firm.addMark(mark),
                         country.addMark(mark),
                         mark
                     ]);
-                }).spread((firm,country,mark)=>{
-                        self.read(mark.id).then(resolve).catch(reject);
-                    }).catch(reject)
+                }).spread((firm, country, mark) => {
+                    self.read(mark.id).then(resolve).catch(reject);
+                }).catch(reject)
             });
         }
-        function grant(firmId,countryId) {
+
+        function grant(firmId, countryId) {
 
         }
 
         function update(req) {
-            let keys = Object.keys( req.data);
-            let key = Number.parseInt( keys[0]);
+            let keys = Object.keys(req.data);
+            let key = Number.parseInt(keys[0]);
             let data = req.data[key];
             return new Promise((resolve, reject) => {
                 let entity = {
@@ -146,21 +149,19 @@ module.exports = (markRepository,firmRepository,countryRepository, errors) => {
                     self.baseUpdate(data.id, entity),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
-                ]).spread((mark,firm,country)=> {
-                    if(mark&&firm&&country)
+                ]).spread((mark, firm, country) => {
+                    if (mark && firm && country)
                         return new Promise.all([
                             mark.data,
                             firm.addMark(mark.data),
                             country.addMark(mark.data)
                         ]);
                     else return new Promise.all([mark.data])
-                }).spread((mark,firm,country)=>{
+                }).spread((mark, firm, country) => {
                     self.read(mark.id).then(resolve).catch(reject);
                 }).catch(reject)
             });
         }
-
-
 
 
     }
