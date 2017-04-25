@@ -21,6 +21,9 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/demo-login.css"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/style-login.css"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/animate-custom.css"/>
+
+    <script type="text/javascript" language="javascript" src="javascripts/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="javascripts/notify.js"></script>
 </head>
 <body>
 <div class="container">
@@ -31,19 +34,21 @@
             <a class="hiddenanchor" id="tologin"></a>
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form action="api/session" method="post" autocomplete="on">
+                    <form autocomplete="on">
                         <h1>Log in</h1>
                         <p>
-                            <label for="username" class="uname" data-icon="u"> Your email or username </label>
-                            <input id="username" name="email" required="required" type="text" placeholder="mymail@mail.com"/>
+                            <label for="email" class="uname" data-icon="u"> Your email or username </label>
+                            <input id="email" name="email" required="required" type="text"
+                                   placeholder="mymail@mail.com"/>
                         </p>
                         <p>
                             <label for="password" class="youpasswd" data-icon="p"> Your password </label>
-                            <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+                            <input id="password" name="password" required="required" type="password"
+                                   placeholder="eg. X8df!90EO"/>
                         </p>
 
                         <p class="login button">
-                            <input type="submit" value="Login"/>
+                            <input id="submit" type="button" value="Login"/>
                         </p>
                         <p class="change_link">
                             Not a member yet ?
@@ -55,6 +60,24 @@
             </div>
         </div>
     </section>
+
+    <script>
+       $("#submit").on('click', function () {
+           $.post("api/session",{
+               'email': $("#email").val(),
+               'password':  $("#password").val()
+           }, function (data) {
+           })
+               .done(function () {
+                   window.location.replace("/");
+               })
+               .fail(function (error) {
+                   $.notify("Invalid Credential");
+               })
+
+       })
+
+    </script>
 </div>
 </body>
 </html>

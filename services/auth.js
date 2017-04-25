@@ -43,7 +43,7 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
         return new Promise((resolve, reject) => {
             bcrypt.hash(data.password, 5, function (err, hash) {
                 if (err) {
-                    throw err;
+                    reject(err);
                 }
                 let user = {
                     id: Math.floor(Math.random() * 999999 + 10000000),

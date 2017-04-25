@@ -21,6 +21,9 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/demo-login.css"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/style-login.css"/>
     <link rel="stylesheet" type="text/css" href="stylesheets/animate-custom.css"/>
+
+    <script type="text/javascript" language="javascript" src="javascripts/jquery.js"></script>
+    <script type="text/javascript" language="javascript" src="javascripts/notify.js"></script>
 </head>
 <body>
 <div class="container">
@@ -31,36 +34,36 @@
             <a class="hiddenanchor" id="tologin"></a>
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form action="api/users" method="post" autocomplete="on">
+                    <form autocomplete="on">
                         <h1> Sign up </h1>
                         <p>
-                            <label  class="uname" data-icon="u">First Name</label>
-                            <input  name="firstname" required="required" type="text"
+                            <label class="uname" data-icon="u">First Name</label>
+                            <input id="firstname" required="required" type="text"
                                    placeholder="Jon"/>
                         </p>
                         <p>
-                            <label  class="uname" data-icon="u">Last Name</label>
-                            <input  name="lastname" required="required" type="text"
+                            <label class="uname" data-icon="u">Last Name</label>
+                            <input id="lastname" required="required" type="text"
                                    placeholder="Snow"/>
                         </p>
                         <p>
-                            <label for="emailsignup" class="youmail" data-icon="e"> Your Email</label>
-                            <input id="emailsignup" name="email" required="required" type="email"
+                            <label class="youmail" data-icon="e"> Your Email</label>
+                            <input id="email" required="required" type="email"
                                    placeholder="mysupermail@mail.com"/>
                         </p>
                         <p>
-                            <label for="passwordsignup" class="youpasswd" data-icon="p">Your Password </label>
-                            <input id="passwordsignup" name="password" required="required" type="password"
+                            <label class="youpasswd" data-icon="p">Your Password </label>
+                            <input id="password" required="required" type="password"
                                    placeholder="eg. X8df!90EO"/>
                         </p>
                         <p>
-                            <label for="passwordsignup_confirm" class="youpasswd" data-icon="p">Please confirm your
+                            <label class="youpasswd" data-icon="p">Please confirm your
                                 password </label>
-                            <input id="passwordsignup_confirm" name="password_confirm" required="required"
+                            <input id="password_confirm" required="required"
                                    type="password" placeholder="eg. X8df!90EO"/>
                         </p>
                         <p class="signin button">
-                            <input type="submit" value="Sign up"/>
+                            <input id="submit" type="button" value="Sign up"/>
                         </p>
                         <p class="change_link">
                             Already a member ?
@@ -73,5 +76,31 @@
         </div>
     </section>
 </div>
+<script>
+    $("#submit").on('click', function () {
+        if(($("#password").val() !== $("#password_confirm").val()) ){
+            $.notify("Passwords Don't Match","warn");
+            return;
+        }
+        else if(!$("#password").val() || !$("#email").val()|| !$("#firstname").val()|| !$("#lastname").val()){
+            $.notify("Fill all fields correctly","warn");
+            return;
+        }
+        $.post("api/users", {
+            'email': $("#email").val(),
+            'firstname': $("#firstname").val(),
+            'lastname': $("#lastname").val(),
+            'password': $("#password").val()
+        }, function (data) {
+        })
+            .done(function () {
+                window.location.replace("/");
+            })
+            .fail(function (error) {
+                $.notify("Incorrect data, please, try again");
+            })
+
+    })
+</script>
 </body>
 </html>
