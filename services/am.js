@@ -187,7 +187,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                             driver.addAm(am.data),
 
                         ]);
-                    else return new Promise.all([am.data])
+                    else return reject({message:'mark or driver not found'});
                 }).spread((am, mark, driver) => {
                     self.read(am.id).then(resolve)
                 }).catch(reject);

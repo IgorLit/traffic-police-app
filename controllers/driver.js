@@ -20,7 +20,7 @@ module.exports = (DriverService, promiseHandler) => {
 
             DriverService.update(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function deleteDriver(req,res) {
@@ -34,7 +34,7 @@ module.exports = (DriverService, promiseHandler) => {
         function create(req, res) {
             DriverService.create(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}))
         }
 
         function readAll(req, res) {
@@ -42,7 +42,7 @@ module.exports = (DriverService, promiseHandler) => {
                 .then((result) => {
                     res.json(result);
                 })
-                .catch((err) => res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
     }
 

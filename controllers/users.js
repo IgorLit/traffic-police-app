@@ -12,9 +12,7 @@ module.exports = (authService, config) => {
                 res.cookie(config.cookie.roleName, userRoleName);
                 res.redirect("/");
             })
-            .catch((err) => {
-           return res.error(err.message);
-            });
+            .catch((err) =>  res.error(err.message));
     });
 
     router.get('/new', (req, res) => { // gets the webpage that has the registration form

@@ -22,6 +22,9 @@
 
     <script type="text/javascript" language="javascript" src="javascripts/base64.js"></script>
     <script type="text/javascript" language="javascript" src="javascripts/script.js"></script>
+
+
+    <script type="text/javascript" language="javascript" src="javascripts/notify.js"></script>
     <script>
         var editor; // use a global for the submit and return data rendering in the examples
 
@@ -92,6 +95,9 @@
                 ],
                 select: true,
                 buttons: getButtons(Base64.decode(getCookie('roleName')), editor)
+            } );
+            editor.on( 'submitSuccess', function ( e, type ) {
+                $.notify("Success","success");
             } );
         } );
 

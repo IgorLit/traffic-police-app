@@ -20,7 +20,7 @@ module.exports = (FirmService, promiseHandler) => {
 
             FirmService.update(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function deleteFirm(req, res) {
@@ -35,7 +35,7 @@ module.exports = (FirmService, promiseHandler) => {
 
             FirmService.create(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function readAll(req, res) {
@@ -43,7 +43,7 @@ module.exports = (FirmService, promiseHandler) => {
                 .then((result) => {
                     res.json(result);
                 })
-                .catch((err) => res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
     }
 

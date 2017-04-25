@@ -18,7 +18,7 @@ module.exports = (CountryService, promiseHandler) => {
         function update(req, res) {
             CountryService.update(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function deleteCountry(req, res) {
@@ -33,7 +33,7 @@ module.exports = (CountryService, promiseHandler) => {
 
             CountryService.create(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function readAll(req, res) {
@@ -41,7 +41,7 @@ module.exports = (CountryService, promiseHandler) => {
                 .then((result) => {
                     res.json(result);
                 })
-                .catch((err) => res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
     }
 

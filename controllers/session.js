@@ -22,7 +22,7 @@ module.exports = (authService, config) => {
     router.delete('/', (req, res) => { //destroys session and redirect to /
         res.cookie(config.cookie.auth, '');
         res.cookie(config.cookie.roleName, '');
-        res.redirect("/")
+        res.end();
     });
 
 

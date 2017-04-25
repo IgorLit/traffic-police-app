@@ -19,7 +19,7 @@ module.exports = (jackedService, promiseHandler) => {
 
             jackedService.update(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function deleteJacked(req, res) {
@@ -34,7 +34,7 @@ module.exports = (jackedService, promiseHandler) => {
 
             jackedService.create(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function readAll(req, res) {
@@ -42,7 +42,7 @@ module.exports = (jackedService, promiseHandler) => {
                 .then((result) => {
                     res.json(result);
                 })
-                .catch((err) => res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
     }
 

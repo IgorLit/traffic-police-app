@@ -19,7 +19,7 @@ module.exports = (markService, promiseHandler) => {
 
             markService.update(req.body).then((result) => {
                 res.json(result)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
         }
 
         function deleteMark(req, res) {
@@ -34,7 +34,7 @@ module.exports = (markService, promiseHandler) => {
 
             markService.create(req.body).then((result) => {
                 res.json(result)
-                }).catch((err) => res.error(err));
+                }).catch((err) => res.send({error: err.message}));
         }
 
         function readAll(req, res) {
@@ -42,8 +42,7 @@ module.exports = (markService, promiseHandler) => {
                 .then((result) => {
                     res.json(result);
                 })
-                .catch((err) =>
-                    res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
     }
 

@@ -91,7 +91,7 @@ module.exports = (DriverRepository, errors) => {
                     DRIVER_CATEGORY: data.DRIVER_CATEGORY
                 };
 
-                self.baseCreate(driver)
+              return  self.baseCreate(driver)
                     .then((result)=>{
                         resolve({"data":result})
                     }).catch(reject);
@@ -114,7 +114,7 @@ module.exports = (DriverRepository, errors) => {
                     DRIVER_CATEGORY: data.DRIVER_CATEGORY
                 };
 
-                self.baseUpdate(data.id, driver)
+               return self.baseUpdate(data.id, driver)
                     .then(resolve).catch(reject);
             });
         }

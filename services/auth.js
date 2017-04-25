@@ -26,13 +26,14 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
                 }
             })
                 .then((user) => {
-                    if (user === null)
-                        resolve(null);
-                    else
-                        user.getRole().then((role) => {
-                            if (role != null) resolve([user.id, role.name]);
-                            else reject(errors.wrongCredentials);
-                        });
+                    if (user !== null) {
+
+
+                        user.getRole().then((role) => role && bcrypt.compareSync(data.password, user.password)? resolve([user.id, role.name]): reject(errors.wrongCredentials));
+                    } else {
+                        reject(errors.wrongCredentials);
+                    }
+
                 })
                 .catch(reject);
         });

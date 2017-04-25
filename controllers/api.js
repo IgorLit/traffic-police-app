@@ -31,5 +31,5 @@ module.exports = (userService, roleService, authService, amService, driverServic
 function promiseHandler(res, promise) {
     promise
         .then((data) => res.json(data))
-        .catch((err) => res.error(err));
+        .catch((err) => res.send({error: err.message}));
 }

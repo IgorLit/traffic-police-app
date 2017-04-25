@@ -18,7 +18,7 @@ module.exports = (amService, promiseHandler) => {
         function update(req, res) {
             amService.update(req.body).then((ams) => {
                 res.json(ams)
-            }).catch((err) => res.error(err));
+            }).catch((err) => res.send({error: err.message}));
 
         }
 
@@ -33,10 +33,7 @@ module.exports = (amService, promiseHandler) => {
         function create(req, res) {
             amService.create(req.body).then((ams) => {
                 res.json(ams)
-            }).catch((err) =>{
-                console.error(err);
-               return res.error(err);
-            });
+            }).catch((err) => res.send({error: err.message}));
 
         }
 
@@ -45,7 +42,7 @@ module.exports = (amService, promiseHandler) => {
                 .then((ams) => {
                     res.json(ams)
                 })
-                .catch((err) => res.error(err));
+                .catch((err) => res.send({error: err.message}));
         }
 
 
