@@ -9,7 +9,8 @@
   "env": "dev",
   "cookie": {
     "key": "secret key",
-    "auth": "__auth_id"
+    "auth": "__auth_id",
+    "roleName": "roleName"
   },
   "defaults": {
     "readChunk": {

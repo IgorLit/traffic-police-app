@@ -1,0 +1,46 @@
+{
+  "GET": {
+    "/users/new": "*",
+    "/session/new": "*",
+    "/ams": ["user", "admin"],
+    "/drivers" :["user", "admin"] ,
+    "/jacked":["user", "admin"],
+    "/firms":["user", "admin"],
+    "/countries":["user", "admin"],
+    "/marks":["user", "admin"],
+    "/am.html": ["user", "admin"],
+    "/country.html": ["user", "admin"],
+    "/driver.html": ["user", "admin"],
+    "/firm.html": ["user", "admin"],
+    "/jacked.html": ["user", "admin"],
+    "/mark.html": ["user", "admin"],
+    "/panel.html": ["user", "admin"]
+  },
+  "POST" : {
+    "/session": "*",
+    "/users": "*",
+    "/ams": ["user", "admin"],
+    "/drivers" :["user", "admin"] ,
+    "/jacked":["user", "admin"],
+    "/firms":["user", "admin"],
+    "/countries":["user", "admin"],
+    "/marks":["user", "admin"]
+  },
+  "PUT":{
+    "/ams": ["user", "admin"],
+    "/drivers" :["user", "admin"] ,
+    "/jacked":["user", "admin"],
+    "/firms":["user", "admin"],
+    "/countries":["user", "admin"],
+    "/marks":["user", "admin"]
+  },
+  "DELETE" : {
+    "/ams": [ "admin"],
+    "/drivers" :[ "admin"] ,
+    "/jacked":[ "admin"],
+    "/firms":[ "admin"],
+    "/countries":[ "admin"],
+    "/marks":[ "admin"],
+    "/session" :[ "admin"]
+  }
+}
