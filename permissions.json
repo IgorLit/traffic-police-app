@@ -27,12 +27,12 @@
     "/marks":["user", "admin"]
   },
   "PUT":{
-    "/ams": ["user", "admin"],
-    "/drivers" :["user", "admin"] ,
-    "/jacked":["user", "admin"],
-    "/firms":["user", "admin"],
-    "/countries":["user", "admin"],
-    "/marks":["user", "admin"]
+    "/ams": ["admin"],
+    "/drivers" :[ "admin"] ,
+    "/jacked":[ "admin"],
+    "/firms":["admin"],
+    "/countries":[ "admin"],
+    "/marks":["admin"]
   },
   "DELETE" : {
     "/ams": [ "admin"],
