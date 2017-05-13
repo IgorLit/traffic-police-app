@@ -65,15 +65,12 @@ function BaseService(repository, errors) {
     }
 
     function baseUpdate(id, data) {
-        return new Promise((resolve, reject) => repository.update(data, { where: { id: id } })
-                .then(() => self.read(id)));
+        return  repository.update(data, { where: { id: id }})
+                .then(() => self.read(id));
     }
 
     function del(id) {
-        return new Promise((resolve, reject) => {
-            repository.destroy({ where: { id: id } })
-                .then(() => resolve({ success: true }))
-                .catch(reject);
-        });
+           return repository.destroy({ where: { id: id } })
+                .then(() => ({ success: true }));
     }
 }

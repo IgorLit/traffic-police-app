@@ -7,10 +7,6 @@ function BaseController(service, promiseHandler) {
     this.registerRoutes = registerRoutes;
     this.router = express.Router();
     this.routes = {
-        '/': [{method: 'get', cb: readAll},
-            {method: 'delete', cb: del},
-            {method: 'put', cb: update},
-            {method: 'post', cb: create}],
         '/:id': [{method: 'get', cb: read}]
     };
 

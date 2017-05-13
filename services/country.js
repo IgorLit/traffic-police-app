@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (countryRepository, errors) => {
     const BaseService = require('./base');
-    const config =require('../config.json');
+    const config = require('../config.json');
 
     Object.setPrototypeOf(CountryService.prototype, BaseService.prototype);
 
@@ -12,7 +12,7 @@ module.exports = (countryRepository, errors) => {
 
         self.create = create;
         self.update = update;
-        self.readChunk=readChunk;
+        self.readChunk = readChunk;
 
         function readChunk(options) {
             return new Promise((resolve, reject) => {
@@ -22,7 +22,7 @@ module.exports = (countryRepository, errors) => {
                 var offset = Number(options.start);
                 var searchKey = '%' + options.search.value + '%';
                 var orderColumnNumber = Number(options.order[0].column);
-                if(options.columns)
+                if (options.columns)
                     var orderColumn = options.columns[orderColumnNumber].data;
                 else
                     var orderColumn = "id";
@@ -42,22 +42,26 @@ module.exports = (countryRepository, errors) => {
                             ]
                         }
                     }
-                ).then((result)=>{
-                    if(options.search.value.length>0)
-                        resolve({"data": result.rows,
+                ).then((result) => {
+                    if (options.search.value.length > 0)
+                        resolve({
+                            "data": result.rows,
                             "options": [],
                             "files": [],
-                            "draw":options.draw,
+                            "draw": options.draw,
                             "recordsTotal": result.count,
-                            "recordsFiltered": result.rows.length});
+                            "recordsFiltered": result.rows.length
+                        });
                     else
-                        resolve({"data": result.rows,
+                        resolve({
+                            "data": result.rows,
                             "options": [],
                             "files": [],
-                            "draw":options.draw,
+                            "draw": options.draw,
                             "recordsTotal": result.count,
-                            "recordsFiltered": result.count});
-                }).catch(reject);
+                            "recordsFiltered": result.count
+                        });
+                });
             });
         }
 
@@ -70,27 +74,21 @@ module.exports = (countryRepository, errors) => {
                 };
 
                 self.baseCreate(entity)
-                    .then((result)=>{
-                        resolve({"data":result})
-                    }).catch(reject);
+                    .then((result) => {
+                        resolve({"data": result})
+                    });
             });
         }
 
         function update(req) {
-            let keys = Object.keys( req.data);
-            let key = Number.parseInt( keys[0]);
+            let keys = Object.keys(req.data);
+            let key = Number.parseInt(keys[0]);
             let data = req.data[key];
-            return new Promise((resolve, reject) => {
-                let entity = {
-                    COUNTRY_NAME: data.COUNTRY_NAME
-                };
-
-                self.baseUpdate(data.id, entity)
-                    .then(resolve).catch(reject);
-            });
+            let entity = {
+                COUNTRY_NAME: data.COUNTRY_NAME
+            };
+            return self.baseUpdate(data.id, entity);
         }
-
-
 
 
     }

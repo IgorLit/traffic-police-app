@@ -98,9 +98,7 @@ module.exports = (userRepository, roleRepository, errors) => {
                     "recordsFiltered": records
                 });
 
-            }).catch((error) => {
-                return reject(error);
-            });
+            })
         });
     }
 

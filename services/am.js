@@ -165,7 +165,6 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
             let keys = Object.keys(req.data);
             let key = Number.parseInt(keys[0]);
             let data = req.data[key];
-            return new Promise((resolve, reject) => {
                 let am = {
                     AM_REG_NUMBER: data.AM_REG_NUMBER,
                     AM_BODY_NUMBER: data.AM_BODY_NUMBER,
@@ -187,11 +186,10 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                             driver.addAm(am.data),
 
                         ]);
-                    else return reject({message:'mark or driver not found'});
+                    else return Promise.reject({message:'mark or driver not found'});
                 }).spread((am, mark, driver) => {
                   return  self.read(am.id);
                 })
-            });
         }
     }
 

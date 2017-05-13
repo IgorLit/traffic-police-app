@@ -79,9 +79,7 @@ module.exports = (DriverRepository, errors) => {
 
         function create(req) {
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
                 let driver = {
-
                     DRIVER_FIO: data.DRIVER_FIO,
                     DRIVER_BIRTHDATE: data.DRIVER_BIRTHDATE,
                     DRIVER_ADRESS: data.DRIVER_ADRESS,
@@ -92,19 +90,14 @@ module.exports = (DriverRepository, errors) => {
                 };
 
               return  self.baseCreate(driver)
-                    .then((result)=>{
-                        resolve({"data":result})
-                    })
-            });
+                    .then((result)=>({"data":result}));
         }
 
         function update(req) {
             let keys = Object.keys( req.data);
             let key = Number.parseInt( keys[0]);
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
                 let driver = {
-
                     DRIVER_FIO: data.DRIVER_FIO,
                     DRIVER_BIRTHDATE: data.DRIVER_BIRTHDATE,
                     DRIVER_ADRESS: data.DRIVER_ADRESS,
@@ -115,7 +108,6 @@ module.exports = (DriverRepository, errors) => {
                 };
 
                return self.baseUpdate(data.id, driver);
-            });
         }
 
 

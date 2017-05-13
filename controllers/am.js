@@ -12,6 +12,7 @@ module.exports = (amService, promiseHandler) => {
             {method: 'put', cb: update},
             {method: 'delete', cb: deleteAm}];
 
+
         this.registerRoutes();
         return this.router;
 

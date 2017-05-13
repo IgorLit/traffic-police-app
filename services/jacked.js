@@ -43,14 +43,12 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
             return new Promise((resolve, reject) => {
                 options = Object.assign({}, config.defaults.readChunk, options);
 
-                var limit = Number(options.length);
-                var offset = Number(options.start);
-                var searchKey = '%' + options.search.value + '%';
-                var orderColumnNumber = Number(options.order[0].column);
-                if (options.columns)
-                    var orderColumn = options.columns[orderColumnNumber].data;
-                else
-                    var orderColumn = "JC_JACKDATE";
+                let limit = Number(options.length);
+                let offset = Number(options.start);
+                let searchKey = '%' + options.search.value + '%';
+                let orderColumnNumber = Number(options.order[0].column);
+                let orderColumn = options.columns ? options.columns[orderColumnNumber].data : "JC_JACKDATE";
+
                 jackedRepository.findAndCountAll({
                         limit: limit,
                         offset: offset,
@@ -89,7 +87,7 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                         ]
                     }
                 ).then((result) => {
-                    for (var i = 0; i < result.rows.length; i++) {
+                    for (let i = 0; i < result.rows.length; i++) {
                         result.rows[i]["AM"] = result.rows[i]["am.AM_REG_NUMBER"];
                         result.rows[i]["DRIVER"] = result.rows[i]["driver.DRIVER_FIO"];
                         result.rows[i]["DRIVER_RULES_DATE"] = result.rows[i]["driver.DRIVER_RULES_DATE"];
@@ -123,60 +121,53 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
 
         function create(req) {
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
-                let entity = {
+            let entity = {
 
-                    JC_JACKDATE: data.JC_JACKDATE,
-                    JC_REPORT_DATE: data.JC_REPORT_DATE,
-                    JC_ADDITIONAL: data.JC_ADDITIONAL,
-                    JC_FOUND: data.JC_FOUND
-                };
-                Promise.all([
-                    self.baseCreate(entity),
-                    amRepository.findById(data.am),
-                    driverRepository.findById(data.driver)
-                ]).spread((jacked, am, driver) => {
-                    return new Promise.all([
-                        jacked.setAm(am),
-                        jacked.setDriver(driver),
-                        jacked
-                    ]);
-                }).spread((am, driver, jacked) => {
-                    self.read(jacked.id).then(resolve)
-                }).catch(reject);
-            });
+                JC_JACKDATE: data.JC_JACKDATE,
+                JC_REPORT_DATE: data.JC_REPORT_DATE,
+                JC_ADDITIONAL: data.JC_ADDITIONAL,
+                JC_FOUND: data.JC_FOUND
+            };
+            return Promise.all([
+                self.baseCreate(entity),
+                amRepository.findById(data.am),
+                driverRepository.findById(data.driver)
+            ]).spread((jacked, am, driver) => {
+                return new Promise.all([
+                    jacked.setAm(am),
+                    jacked.setDriver(driver),
+                    jacked
+                ]);
+            }).spread((am, driver, jacked) => self.read(jacked.id).then(resolve));
         }
 
         function update(req) {
             let keys = Object.keys(req.data);
             let key = Number.parseInt(keys[0]);
             let data = req.data[key];
-            return new Promise((resolve, reject) => {
-                let entity = {
-                    JC_JACKDATE: data.JC_JACKDATE,
-                    JC_REPORT_DATE: data.JC_REPORT_DATE,
-                    JC_ADDITIONAL: data.JC_ADDITIONAL,
-                    JC_FOUND: data.JC_FOUND
-                };
-                Promise.all([
-                    self.baseUpdate(data.id, entity),
-                    amRepository.findById(data.am),
-                    driverRepository.findById(data.driver)
-                ]).spread((jacked, am, driver) => {
-                    if (jacked && am && driver)
-                        return new Promise.all([
-                            jacked.data,
-                            jacked.data.setAm(am),
-                            jacked.data.setDriver(driver)
-                        ]);
-                    else return new Promise.all([jacked.data])
-                }).spread((jacked, am, driver) => {
-                    self.read(jacked.id).then(resolve)
-                }).catch(reject);
-            });
+            let entity = {
+                JC_JACKDATE: data.JC_JACKDATE,
+                JC_REPORT_DATE: data.JC_REPORT_DATE,
+                JC_ADDITIONAL: data.JC_ADDITIONAL,
+                JC_FOUND: data.JC_FOUND
+            };
+            return Promise.all([
+                self.baseUpdate(data.id, entity),
+                amRepository.findById(data.am),
+                driverRepository.findById(data.driver)
+            ]).spread((jacked, am, driver) => {
+                if (jacked && am && driver)
+                    return new Promise.all([
+                        jacked.data,
+                        jacked.data.setAm(am),
+                        jacked.data.setDriver(driver)
+                    ]);
+                else return new Promise.all([jacked.data])
+            }).spread((jacked, am, driver) => self.read(jacked.id).then(resolve));
         }
 
 
     }
+
     return new JackedService(jackedRepository, errors);
 };

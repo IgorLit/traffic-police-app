@@ -113,11 +113,10 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
 
         function create(req) {
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
                 let entity = {
                     MARK_NAME: data.MARK_NAME
                 };
-                Promise.all([
+               return Promise.all([
                     self.baseCreate(entity),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
@@ -127,10 +126,7 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                         country.addMark(mark),
                         mark
                     ]);
-                }).spread((firm, country, mark) => {
-                    self.read(mark.id).then(resolve).catch(reject);
-                }).catch(reject)
-            });
+                }).spread((firm, country, mark) =>  self.read(mark.id).then(resolve).catch(reject))
         }
 
         function grant(firmId, countryId) {
@@ -141,11 +137,10 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
             let keys = Object.keys(req.data);
             let key = Number.parseInt(keys[0]);
             let data = req.data[key];
-            return new Promise((resolve, reject) => {
                 let entity = {
                     MARK_NAME: data.MARK_NAME
                 };
-                Promise.all([
+               return Promise.all([
                     self.baseUpdate(data.id, entity),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
@@ -157,10 +152,7 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                             country.addMark(mark.data)
                         ]);
                     else return new Promise.all([mark.data])
-                }).spread((mark, firm, country) => {
-                    self.read(mark.id).then(resolve).catch(reject);
-                }).catch(reject)
-            });
+                }).spread((mark, firm, country) => self.read(mark.id).then(resolve).catch(reject))
         }
 
 

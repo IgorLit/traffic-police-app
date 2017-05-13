@@ -12,14 +12,11 @@ module.exports = (roleRepository, errors) => {
         self.create = create;
 
         function create(data) {
-            return new Promise((resolve, reject) => {
                 var user = {
                     name: data.name
                 };
 
-                self.baseCreate(user)
-                    .then(resolve).catch(reject);
-            });
+               return self.baseCreate(user);
         }
     }
 
