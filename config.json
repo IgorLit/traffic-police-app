@@ -1,10 +1,17 @@
 {
-  "db": {
+  "dev": {
     "host": "127.0.0.1",
     "name": "mytestdb",
     "user": "sa",
     "password": "root",
     "connection_uri":"mssql://sa:root@localhost:1433/GAI"
+  },
+  "prod":{
+    "host": "ec2-50-17-220-223.compute-1.amazonaws.com",
+    "name": "dfg0pi4n5ltktn",
+    "user": "yilcavaezgjdxj",
+    "password": "12ea05a2680744eb807e80d102ff6571ab1b98eae9578383159a67559a74fece",
+    "dialect": "postgres"
   },
   "env": "dev",
   "cookie": {

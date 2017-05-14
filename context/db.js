@@ -1,14 +1,34 @@
 'use strict';
 module.exports = (Sequelize, config) => {
+    let sequelize;
+    if (process.env.NODE_ENV === 'production') {
+        const options = {
+            host: config.prod.host,
+            dialect: config.prod.dialect,
+            logging: false,
+            define: {
+                timestamps: true,
+                paranoid: true,
+                defaultScope: {
+                    where: {
+                        deletedAt: {$eq: null}
+                    }
+                }
+            }
+        };
+       // sequelize = new Sequelize(config.prod.name, config.prod.user, config.prod.password, options);
+        sequelize = new Sequelize(process.env.NODE_ENV.DATABASE_URL);
+    }
+    else{
+        sequelize = new Sequelize(config.dev.connection_uri);
+    }
 
-    const sequelize = new Sequelize(config.db.connection_uri);
-
-    const Am = require('../models/am')(Sequelize,sequelize);
-    const Driver = require('../models/driver')(Sequelize,sequelize);
-    const Jacked = require('../models/jacked')(Sequelize,sequelize);
-    const Mark = require('../models/mark')(Sequelize,sequelize);
-    const Firm = require('../models/firm')(Sequelize,sequelize);
-    const Country = require('../models/country')(Sequelize,sequelize);
+    const Am = require('../models/am')(Sequelize, sequelize);
+    const Driver = require('../models/driver')(Sequelize, sequelize);
+    const Jacked = require('../models/jacked')(Sequelize, sequelize);
+    const Mark = require('../models/mark')(Sequelize, sequelize);
+    const Firm = require('../models/firm')(Sequelize, sequelize);
+    const Country = require('../models/country')(Sequelize, sequelize);
 
     const User = require('../models/user')(Sequelize, sequelize);
     const Role = require('../models/role')(Sequelize, sequelize);
@@ -40,12 +60,12 @@ module.exports = (Sequelize, config) => {
     return {
         user: User,
         role: Role,
-        am:Am,
-        driver:Driver,
-        jacked:Jacked,
-        mark:Mark,
-        firm:Firm,
-        country:Country,
+        am: Am,
+        driver: Driver,
+        jacked: Jacked,
+        mark: Mark,
+        firm: Firm,
+        country: Country,
         sequelize: sequelize
     };
 };
