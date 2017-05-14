@@ -16,8 +16,8 @@ module.exports = (Sequelize, config) => {
                 }
             }
         };
-       // sequelize = new Sequelize(config.prod.name, config.prod.user, config.prod.password, options);
-        sequelize = new Sequelize(process.env.NODE_ENV.DATABASE_URL);
+        sequelize = new Sequelize(config.prod.name, config.prod.user, config.prod.password, options);
+        //sequelize = new Sequelize(process.env.NODE_ENV.DATABASE_URL);
     }
     else{
         sequelize = new Sequelize(config.dev.connection_uri);

@@ -7,10 +7,10 @@
     "connection_uri":"mssql://sa:root@localhost:1433/GAI"
   },
   "prod":{
-    "host": "ec2-50-17-220-223.compute-1.amazonaws.com",
-    "name": "dfg0pi4n5ltktn",
-    "user": "yilcavaezgjdxj",
-    "password": "12ea05a2680744eb807e80d102ff6571ab1b98eae9578383159a67559a74fece",
+    "host": "ec2-54-83-25-217.compute-1.amazonaws.com",
+    "name": "d14hbq6cmvhnjm",
+    "user": "rmacfkxsextdnf",
+    "password": "ed9177e0d0dba409f46dfd2714fd09c427570425356d5b9c08ee896a02dc7981",
     "dialect": "postgres"
   },
   "env": "dev",
