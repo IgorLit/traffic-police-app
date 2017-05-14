@@ -142,17 +142,12 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
         }
 
         function update(req) {
-            let keys = Object.keys(req.data);
+            let keys = Object.keys(req.body.data);
             let key = Number.parseInt(keys[0]);
-            let data = req.data[key];
-            let entity = {
-                JC_JACKDATE: data.JC_JACKDATE,
-                JC_REPORT_DATE: data.JC_REPORT_DATE,
-                JC_ADDITIONAL: data.JC_ADDITIONAL,
-                JC_FOUND: data.JC_FOUND
-            };
+            let data = req.body.data[key];
+
             return Promise.all([
-                self.baseUpdate(data.id, entity),
+                self.baseUpdate(req.params.id || data.id, data),
                 amRepository.findById(data.am),
                 driverRepository.findById(data.driver)
             ]).spread((jacked, am, driver) => {
@@ -162,8 +157,8 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                         jacked.data.setAm(am),
                         jacked.data.setDriver(driver)
                     ]);
-                else return new Promise.all([jacked.data])
-            }).spread((jacked, am, driver) => self.read(jacked.id).then(resolve));
+                else return [jacked.data];
+            }).spread((jacked, am, driver) => self.read(jacked.id));
         }
 
 

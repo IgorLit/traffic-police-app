@@ -147,49 +147,55 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                     driverRepository.findById(data.driver)
                 ]).spread((mark, driver) => {
                     if (!mark || !driver) {
-                        reject(`Error while creating object. ${mark ? 'Driver': 'Mark'} id doesen\'t not exist`);
+                        reject(`Error while creating object. ${mark ? 'Driver' : 'Mark'} id doesen\'t not exist`);
                     }
                     return self.baseCreate(am)
                         .then((am) => new Promise.all([
-                        mark.addAm(am),
-                        driver.addAm(am),
-                        am
-                    ]));
+                            mark.addAm(am),
+                            driver.addAm(am),
+                            am
+                        ]));
                 }).spread((mark, driver, am) => {
-                   return self.read(am.id).then(resolve)
+                    return self.read(am.id).then(resolve)
                 });
             });
         }
 
         function update(req) {
-            let keys = Object.keys(req.data);
-            let key = Number.parseInt(keys[0]);
-            let data = req.data[key];
-                let am = {
-                    AM_REG_NUMBER: data.AM_REG_NUMBER,
-                    AM_BODY_NUMBER: data.AM_BODY_NUMBER,
-                    AM_TECHPASSPORT_NUMBER: data.AM_TECHPASSPORT_NUMBER,
-                    AM_ENGINE_NUMBER: data.AM_ENGINE_NUMBER,
-                    AM_COLOR: data.AM_COLOR,
-                    AM_REGISTRATION_DATE: data.AM_REGISTRATION_DATE,
-                    AM_BIRTHDATE: data.AM_BIRTHDATE
-                };
-               return Promise.all([
-                    self.baseUpdate(data.id, am),
-                    markRepository.findById(data.mark),
-                    driverRepository.findById(data.driver)
-                ]).spread((am, mark, driver) => {
-                    if (am && mark && driver)
-                        return new Promise.all([
-                            am.data,
-                            mark.addAm(am.data),
-                            driver.addAm(am.data),
-
-                        ]);
-                    else return Promise.reject({message:'mark or driver not found'});
-                }).spread((am, mark, driver) => {
-                  return  self.read(am.id);
-                })
+            const keys = Object.keys(req.body.data);
+            const key = Number.parseInt(keys[0]);
+            let data = req.body.data[key];
+            const id = req.params.id || data.id;
+            return Promise.all([
+                self.baseUpdate(id, data),
+                markRepository.findById(data.mark),
+                driverRepository.findById(data.driver)
+            ]).spread((am, mark, driver) => {
+                if (am && mark && driver) {
+                    return new Promise.all([
+                        am.data,
+                        mark.addAm(am.data),
+                        driver.addAm(am.data)
+                    ]);
+                }
+                else if (mark) {
+                    return new Promise.all([
+                        am.data,
+                        mark.addAm(am.data)
+                    ]);
+                }
+                else if (driver) {
+                    return new Promise.all([
+                        am.data,
+                        driver.addAm(am.data)
+                    ]);
+                }
+                else {
+                    return [am.data];
+                }
+            }).spread((am, mark, driver) => {
+                return self.read(am.id);
+            })
         }
     }
 

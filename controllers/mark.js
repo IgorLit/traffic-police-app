@@ -17,7 +17,7 @@ module.exports = (markService, promiseHandler) => {
 
         function update(req, res) {
 
-            markService.update(req.body).then((result) => {
+            markService.update(req).then((result) => {
                 res.json(result)
             }).catch((err) => res.send({error: err.message}));
         }

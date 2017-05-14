@@ -17,7 +17,7 @@ module.exports = (jackedService, promiseHandler) => {
 
         function update(req, res) {
 
-            jackedService.update(req.body).then((result) => {
+            jackedService.update(req).then((result) => {
                 res.json(result)
             }).catch((err) => res.send({error: err.message}));
         }

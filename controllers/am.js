@@ -17,7 +17,7 @@ module.exports = (amService, promiseHandler) => {
         return this.router;
 
         function update(req, res) {
-            amService.update(req.body).then((ams) => {
+            amService.update(req).then((ams) => {
                 res.json(ams)
             }).catch((err) => res.send({error: err.message}));
 

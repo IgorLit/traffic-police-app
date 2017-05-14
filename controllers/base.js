@@ -7,7 +7,7 @@ function BaseController(service, promiseHandler) {
     this.registerRoutes = registerRoutes;
     this.router = express.Router();
     this.routes = {
-        '/:id': [{method: 'get', cb: read}]
+        '/:id': [{method: 'get', cb: read}, {method: 'delete', cb: del}, {method: 'put', cb: update}]
     };
 
     function readAll(req, res) {
@@ -29,17 +29,15 @@ function BaseController(service, promiseHandler) {
     }
 
     function update(req, res) {
-
         promiseHandler(res,
-            service.update(req.body)
+            service.update(req)
         );
     }
 
     function del(req, res) {
-        let keys = Object.keys(req.query.data);
-        let key = Number.parseInt(keys[0]);
+        const id = req.params.id;
         promiseHandler(res,
-            service.delete(req.query.data[key].id)
+            service.delete(id)
         );
     }
 

@@ -134,14 +134,12 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
         }
 
         function update(req) {
-            let keys = Object.keys(req.data);
+            let keys = Object.keys(req.body.data);
             let key = Number.parseInt(keys[0]);
-            let data = req.data[key];
-                let entity = {
-                    MARK_NAME: data.MARK_NAME
-                };
+            let data = req.body.data[key];
+
                return Promise.all([
-                    self.baseUpdate(data.id, entity),
+                    self.baseUpdate(req.params.id || data.id, data),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
                 ]).spread((mark, firm, country) => {
@@ -151,8 +149,8 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                             firm.addMark(mark.data),
                             country.addMark(mark.data)
                         ]);
-                    else return new Promise.all([mark.data])
-                }).spread((mark, firm, country) => self.read(mark.id).then(resolve).catch(reject))
+                    else return [mark.data]
+                }).spread((mark, firm, country) => self.read(mark.id))
         }
 
 

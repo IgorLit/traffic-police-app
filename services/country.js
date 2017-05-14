@@ -81,13 +81,11 @@ module.exports = (countryRepository, errors) => {
         }
 
         function update(req) {
-            let keys = Object.keys(req.data);
+            let keys = Object.keys(req.body.data);
             let key = Number.parseInt(keys[0]);
-            let data = req.data[key];
-            let entity = {
-                COUNTRY_NAME: data.COUNTRY_NAME
-            };
-            return self.baseUpdate(data.id, entity);
+            let data = req.body.data[key];
+
+            return self.baseUpdate(req.params.id || data.id, data);
         }
 
 

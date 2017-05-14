@@ -76,14 +76,11 @@ module.exports = (firmRepository, errors) => {
         }
 
         function update(req) {
-            let keys = Object.keys(req.data);
+            let keys = Object.keys(req.body.data);
             let key = Number.parseInt(keys[0]);
-            let data = req.data[key];
-            let entity = {
-                FIRM_NAME: data.FIRM_NAME
-            };
+            let data = req.body.data[key];
 
-            return self.baseUpdate(data.id, entity);
+            return self.baseUpdate(req.params.id || data.id, data);
         }
 
 

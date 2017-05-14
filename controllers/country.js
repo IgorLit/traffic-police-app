@@ -16,7 +16,7 @@ module.exports = (CountryService, promiseHandler) => {
         return this.router;
 
         function update(req, res) {
-            CountryService.update(req.body).then((result) => {
+            CountryService.update(req).then((result) => {
                 res.json(result)
             }).catch((err) => res.send({error: err.message}));
         }
