@@ -88,10 +88,10 @@
                    "password":  $(`#password`).val()
                }),
                contentType: "application/json",
-               complete: function () {
+               success: function () {
                    window.location.replace("/");
                },
-               fail:function (error) {
+               error:function (error) {
                    $.notify("Invalid Credential");
                }
            });
