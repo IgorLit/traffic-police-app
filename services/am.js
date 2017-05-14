@@ -15,27 +15,28 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
         self.readChunk = readChunk;
         self.read = read;
         function read(id) {
-            return new Promise((resolve, reject) => {
-                amRepository.find({
-                    where: {
-                        id: id
-                    },
-                    include: [
-                        {
-                            model: markRepository,
-                            attributes: ["MARK_NAME"]
-                        }, {
-                            model: driverRepository,
-                            attributes: ["DRIVER_FIO"]
-                        }
-                    ]
-                }).then((result) => {
-                    result["MARK"] = result["mark.MARK_NAME"];
-                    result["DRIVER"] = result["driver.DRIVER_FIO"];
-                    delete  result["mark.MARK_NAME"];
-                    delete  result["driver.DRIVER_FIO"];
-                    resolve({"data": result})
-                }).catch(reject);
+            return amRepository.find({
+                where: {
+                    id: id
+                },
+                include: [
+                    {
+                        model: markRepository,
+                        attributes: ["MARK_NAME"]
+                    }, {
+                        model: driverRepository,
+                        attributes: ["DRIVER_FIO"]
+                    }
+                ]
+            }).then((result) => {
+                if (!result) {
+                    throw errors.notFound;
+                }
+                result["MARK"] = result["mark.MARK_NAME"];
+                result["DRIVER"] = result["driver.DRIVER_FIO"];
+                delete  result["mark.MARK_NAME"];
+                delete  result["driver.DRIVER_FIO"];
+                return {"data": result};
             });
         }
 
@@ -131,33 +132,21 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
 
         function create(req) {
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
-                let am = {
-
-                    AM_REG_NUMBER: data.AM_REG_NUMBER,
-                    AM_BODY_NUMBER: data.AM_BODY_NUMBER,
-                    AM_TECHPASSPORT_NUMBER: data.AM_TECHPASSPORT_NUMBER,
-                    AM_ENGINE_NUMBER: data.AM_ENGINE_NUMBER,
-                    AM_COLOR: data.AM_COLOR,
-                    AM_REGISTRATION_DATE: data.AM_REGISTRATION_DATE,
-                    AM_BIRTHDATE: data.AM_BIRTHDATE
-                };
-                Promise.all([
-                    markRepository.findById(data.mark),
-                    driverRepository.findById(data.driver)
-                ]).spread((mark, driver) => {
-                    if (!mark || !driver) {
-                        reject(`Error while creating object. ${mark ? 'Driver' : 'Mark'} id doesen\'t not exist`);
-                    }
-                    return self.baseCreate(am)
-                        .then((am) => new Promise.all([
-                            mark.addAm(am),
-                            driver.addAm(am),
-                            am
-                        ]));
-                }).spread((mark, driver, am) => {
-                    return self.read(am.id).then(resolve)
-                });
+            return Promise.all([
+                markRepository.findById(data.mark),
+                driverRepository.findById(data.driver)
+            ]).spread((mark, driver) => {
+                if (!mark || !driver) {
+                    reject(`Error while creating object. ${mark ? 'Driver' : 'Mark'} id doesen\'t not exist`);
+                }
+                return self.baseCreate(data)
+                    .then((am) => new Promise.all([
+                        mark.addAm(am),
+                        driver.addAm(am),
+                        am
+                    ]));
+            }).spread((mark, driver, am) => {
+                return self.read(am.id).then(resolve)
             });
         }
 

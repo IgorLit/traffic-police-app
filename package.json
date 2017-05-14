@@ -1,5 +1,5 @@
 {
-  "name": "traffic police app",
+  "name": "traffic-police-app",
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
@@ -14,10 +14,15 @@
     "tedious": "^1.14.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest"
   },
   "engines": {
     "node": "6.9.4"
+  },
+  "jest": {
+    "verbose": true,
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
@@ -28,5 +33,13 @@
   "bugs": {
     "url": "https://github.com/IgorLit/traffic-police-app/issues"
   },
-  "homepage": "https://github.com/IgorLit/traffic-police-app#readme"
+  "homepage": "https://github.com/IgorLit/traffic-police-app#readme",
+  "devDependencies": {
+    "babel-jest": "^20.0.1",
+    "babel-preset-es2017": "^6.24.1",
+    "jest": "^20.0.1",
+    "siege": "^0.2.0",
+    "supertest": "^3.0.0",
+    "tape": "^4.6.3"
+  }
 }

@@ -48,3 +48,6 @@ dbcontext.sequelize
         app.listen(app.get('port'), () => console.log(`Running on http://localhost:${app.get('port')}`));
     })
     .catch((err) => console.log(err));
+
+
+module.exports = app;
