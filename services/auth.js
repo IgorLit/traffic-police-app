@@ -14,33 +14,35 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
         Promise.all([
             roleRepository.create({name: 'admin'}),
             roleRepository.create({name: 'user'})
-        ]);
-        return new Promise((resolve, reject) => {
-            userRepository.findOne({
-                where: {
-                    $or: [
-                        {
-                            email: data.email
-                        },
-                        {
-                            id: data.id
-                        }
-                    ]
+        ]).then(()=>{
+            return new Promise((resolve, reject) => {
+                userRepository.findOne({
+                    where: {
+                        $or: [
+                            {
+                                email: data.email
+                            },
+                            {
+                                id: data.id
+                            }
+                        ]
 
-                }
-            })
-                .then((user) => {
-                    if (user !== null) {
-
-
-                        user.getRole().then((role) => role && bcrypt.compareSync(data.password, user.password)? resolve([user.id, role.name]): reject(errors.wrongCredentials));
-                    } else {
-                        reject(errors.wrongCredentials);
                     }
-
                 })
-                .catch(reject);
-        });
+                    .then((user) => {
+                        if (user !== null) {
+
+
+                            user.getRole().then((role) => role && bcrypt.compareSync(data.password, user.password)? resolve([user.id, role.name]): reject(errors.wrongCredentials));
+                        } else {
+                            reject(errors.wrongCredentials);
+                        }
+
+                    })
+                    .catch(reject);
+            });
+        })
+
     }
 
 
