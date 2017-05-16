@@ -11,38 +11,32 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
     };
 
     function login(data) {
-        Promise.all([
-            roleRepository.create({name: 'admin'}),
-            roleRepository.create({name: 'user'})
-        ]).then(()=>{
-            return new Promise((resolve, reject) => {
-                userRepository.findOne({
-                    where: {
-                        $or: [
-                            {
-                                email: data.email
-                            },
-                            {
-                                id: data.id
-                            }
-                        ]
-
-                    }
-                })
-                    .then((user) => {
-                        if (user !== null) {
-
-
-                            user.getRole().then((role) => role && bcrypt.compareSync(data.password, user.password)? resolve([user.id, role.name]): reject(errors.wrongCredentials));
-                        } else {
-                            reject(errors.wrongCredentials);
+        return new Promise((resolve, reject) => {
+            userRepository.findOne({
+                where: {
+                    $or: [
+                        {
+                            email: data.email
+                        },
+                        {
+                            id: data.id
                         }
+                    ]
 
-                    })
-                    .catch(reject);
-            });
-        })
+                }
+            })
+                .then((user) => {
+                    if (user !== null) {
 
+
+                        user.getRole().then((role) => role && bcrypt.compareSync(data.password, user.password)? resolve([user.id, role.name]): reject(errors.wrongCredentials));
+                    } else {
+                        reject(errors.wrongCredentials);
+                    }
+
+                })
+                .catch(reject);
+        });
     }
 
 
@@ -62,7 +56,7 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
 
                 Promise.all([
                     userRepository.create(user),
-                    roleRepository.findOne({where: {name: "admin"}})
+                    roleRepository.findOne({where: {name: "user"}})
                 ])
                     .spread((user, role) => {
                         role.addUser(user);
