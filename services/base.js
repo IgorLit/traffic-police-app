@@ -38,7 +38,6 @@ function BaseService(repository, errors) {
     }
 
     function read(id) {
-        return new Promise((resolve, reject) => {
             id = parseInt(id);
 
             if (isNaN(id)) {
@@ -48,20 +47,14 @@ function BaseService(repository, errors) {
 
             repository.findById(id, { raw: true })
                 .then((post) => {
-                    if (post == null) reject(errors.notFound);
-                    else resolve({"data":post});
+                    if (post === null) throw Error(errors.notFound);
+                    else return ({"data":post});
                 })
-                .catch(reject);
-        });
     }
 
     function baseCreate(data) {
-        return new Promise((resolve, reject) => {
             repository.create(data)
-                .then((result)=>{
-                    resolve(result)
-                }).catch(reject);
-        });
+                .then((result)=> result);
     }
 
     function baseUpdate(id, data) {

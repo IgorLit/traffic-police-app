@@ -4,7 +4,6 @@ const express = require('express');
 module.exports = (userService, roleService, authService, amService, driverService, jackedService, firmService, countryService, markService, config) => {
     const router = express.Router();
 
-    const userController = require('./user')(userService, promiseHandler);
     const roleController = require('./role')(roleService, promiseHandler);
     const authController = require('./users')(authService,userService, config);
     const sessionController = require('./session')(authService, config);

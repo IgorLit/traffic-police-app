@@ -35,7 +35,7 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                     delete  result["am.AM_REG_NUMBER"];
                     delete  result["driver.DRIVER_FIO"];
                     resolve({"data": result})
-                }).catch(reject);
+                });
             });
         }
 
@@ -121,15 +121,8 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
 
         function create(req) {
             let data = req.data[0];
-            let entity = {
-
-                JC_JACKDATE: data.JC_JACKDATE,
-                JC_REPORT_DATE: data.JC_REPORT_DATE,
-                JC_ADDITIONAL: data.JC_ADDITIONAL,
-                JC_FOUND: data.JC_FOUND
-            };
             return Promise.all([
-                self.baseCreate(entity),
+                self.baseCreate(data),
                 amRepository.findById(data.am),
                 driverRepository.findById(data.driver)
             ]).spread((jacked, am, driver) => {
@@ -138,7 +131,7 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                     jacked.setDriver(driver),
                     jacked
                 ]);
-            }).spread((am, driver, jacked) => self.read(jacked.id).then(resolve));
+            }).spread((am, driver, jacked) => self.read(jacked.id));
         }
 
         function update(req) {

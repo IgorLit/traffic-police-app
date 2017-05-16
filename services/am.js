@@ -137,7 +137,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                 driverRepository.findById(data.driver)
             ]).spread((mark, driver) => {
                 if (!mark || !driver) {
-                    reject(`Error while creating object. ${mark ? 'Driver' : 'Mark'} id doesen\'t not exist`);
+                    throw `Error while creating object. ${mark ? 'Driver' : 'Mark'} id doesen\'t not exist`;
                 }
                 return self.baseCreate(data)
                     .then((am) => new Promise.all([
@@ -146,7 +146,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                         am
                     ]));
             }).spread((mark, driver, am) => {
-                return self.read(am.id).then(resolve)
+                return self.read(am.id);
             });
         }
 

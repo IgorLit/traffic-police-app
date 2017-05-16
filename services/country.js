@@ -67,17 +67,10 @@ module.exports = (countryRepository, errors) => {
 
         function create(req) {
             let data = req.data[0];
-            return new Promise((resolve, reject) => {
-                let entity = {
-
-                    COUNTRY_NAME: data.COUNTRY_NAME
-                };
-
-                self.baseCreate(entity)
+               return self.baseCreate(data)
                     .then((result) => {
-                        resolve({"data": result})
+                        return {"data": result};
                     });
-            });
         }
 
         function update(req) {

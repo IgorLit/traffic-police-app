@@ -58,12 +58,8 @@ module.exports = (firmRepository, errors) => {
         }
 
         function create(req) {
-            let data = req.data[0];
-            let entity = {
-                FIRM_NAME: data.FIRM_NAME
-            };
-
-            return self.baseCreate(entity)
+            const data = req.data[0];
+            return self.baseCreate(data)
                 .then((result) => ({"data": result}));
         }
 

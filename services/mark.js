@@ -113,11 +113,8 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
 
         function create(req) {
             let data = req.data[0];
-                let entity = {
-                    MARK_NAME: data.MARK_NAME
-                };
                return Promise.all([
-                    self.baseCreate(entity),
+                    self.baseCreate(data),
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
                 ]).spread((mark, firm, country) => {
@@ -126,7 +123,7 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                         country.addMark(mark),
                         mark
                     ]);
-                }).spread((firm, country, mark) =>  self.read(mark.id).then(resolve).catch(reject))
+                }).spread((firm, country, mark) =>  self.read(mark.id));
         }
 
         function grant(firmId, countryId) {

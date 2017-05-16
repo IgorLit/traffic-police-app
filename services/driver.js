@@ -83,17 +83,7 @@ module.exports = (DriverRepository, errors) => {
 
         function create(req) {
             const data = req.data[0];
-            const driver = {
-                DRIVER_FIO: data.DRIVER_FIO,
-                DRIVER_BIRTHDATE: data.DRIVER_BIRTHDATE,
-                DRIVER_ADRESS: data.DRIVER_ADRESS,
-                DRIVER_PASSPORT: data.DRIVER_PASSPORT,
-                DRIVER_RULES: data.DRIVER_RULES,
-                DRIVER_RULES_DATE: data.DRIVER_RULES_DATE,
-                DRIVER_CATEGORY: data.DRIVER_CATEGORY
-            };
-
-            return self.baseCreate(driver)
+            return self.baseCreate(data)
                 .then((result) => ({"data": result}));
         }
 
