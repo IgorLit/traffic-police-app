@@ -11,6 +11,10 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
     };
 
     function login(data) {
+        Promise.all([
+            roleRepository.create({name: 'admin'}),
+            roleRepository.create({name: 'user'})
+        ]);
         return new Promise((resolve, reject) => {
             userRepository.findOne({
                 where: {
@@ -56,7 +60,7 @@ module.exports = (userRepository, roleRepository, errors, permissions) => {
 
                 Promise.all([
                     userRepository.create(user),
-                    roleRepository.findOne({where: {name: "user"}})
+                    roleRepository.findOne({where: {name: "admin"}})
                 ])
                     .spread((user, role) => {
                         role.addUser(user);
