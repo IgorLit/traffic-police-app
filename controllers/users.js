@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const Base64 = require('js-base64').Base64;
 
 module.exports = (authService,userService, config) => {
     const router = express.Router();
@@ -9,7 +10,7 @@ module.exports = (authService,userService, config) => {
         authService.register(req.body)
             .spread((userId, userRoleName) => {
                 res.cookie(config.cookie.auth, userId, {signed: true});
-                res.cookie(config.cookie.roleName, userRoleName);
+                res.cookie(config.cookie.roleName, Base64.encode(userRoleName));
                 res.redirect("/");
             })
             .catch((err) =>  res.error(err.message));

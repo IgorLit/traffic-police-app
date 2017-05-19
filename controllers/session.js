@@ -1,4 +1,5 @@
 'use strict';
+
 const express = require('express');
 const options = require('../config.json').facebook;
 const Base64 = require('js-base64').Base64;

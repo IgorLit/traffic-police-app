@@ -41,15 +41,14 @@ function BaseService(repository, errors) {
             id = parseInt(id);
 
             if (isNaN(id)) {
-                reject(errors.invalidId);
-                return;
+                throw new Error(errors.invalidId);
             }
 
-            repository.findById(id, { raw: true })
+           return repository.findById(id, { raw: true })
                 .then((post) => {
                     if (post === null) throw Error(errors.notFound);
                     else return ({"data":post});
-                })
+                });
     }
 
     function baseCreate(data) {

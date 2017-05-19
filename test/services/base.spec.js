@@ -77,7 +77,7 @@ describe('Test set for Service.Base', () => {
 
      describe('>> Reading', () => {
          it('Should returned promise', () => {
-             expect(service.read())
+             expect(service.read(1))
                  .toBeInstanceOf(Promise);
          });
 
