@@ -32,7 +32,7 @@ module.exports = (CountryService, promiseHandler) => {
         function create(req, res) {
 
             CountryService.create(req.body).then((result) => {
-                res.json(result)
+                res.status(201).json(result)
             }).catch((err) => res.send({error: err.message}));
         }
 

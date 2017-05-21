@@ -34,7 +34,7 @@ module.exports = (FirmService, promiseHandler) => {
         function create(req, res) {
 
             FirmService.create(req.body).then((result) => {
-                res.json(result)
+                res.status(201).json(result)
             }).catch((err) => res.send({error: err.message}));
         }
 

@@ -33,7 +33,7 @@ module.exports = (DriverService, promiseHandler) => {
 
         function create(req, res) {
             DriverService.create(req.body).then((result) => {
-                res.json(result)
+                res.status(201).json(result)
             }).catch((err) => res.send({error: err.message}))
         }
 

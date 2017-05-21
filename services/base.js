@@ -52,8 +52,7 @@ function BaseService(repository, errors) {
     }
 
     function baseCreate(data) {
-            repository.create(data)
-                .then((result)=> result);
+        return repository.create(data);
     }
 
     function baseUpdate(id, data) {

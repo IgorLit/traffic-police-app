@@ -33,7 +33,7 @@ module.exports = (markService, promiseHandler) => {
         function create(req, res) {
 
             markService.create(req.body).then((result) => {
-                res.json(result)
+                res.status(201).json(result)
                 }).catch((err) => res.send({error: err.message}));
         }
 

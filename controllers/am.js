@@ -33,8 +33,8 @@ module.exports = (amService, promiseHandler) => {
 
         function create(req, res) {
             amService.create(req.body).then((ams) => {
-                res.json(ams)
-            }).catch((err) => res.send({error: err.message}));
+                res.status(201).json(ams)
+            }).catch((err) => res.status(500).send({error: err.message}));
 
         }
 

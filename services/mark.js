@@ -118,6 +118,9 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                     firmRepository.findById(data.firm),
                     countryRepository.findById(data.country)
                 ]).spread((mark, firm, country) => {
+                   if (!mark || !firm) {
+                       throw `Error while creating object. ${mark ? 'Firm' : 'Mark'} id doesen\'t not exist`;
+                   }
                     return new Promise.all([
                         firm.addMark(mark),
                         country.addMark(mark),
