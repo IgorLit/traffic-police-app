@@ -57,18 +57,6 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                         where: {
                             $or: [
                                 {
-                                    JC_JACKDATE: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    JC_REPORT_DATE: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    JC_ADDITIONAL: {
-                                        $like: searchKey
-                                    }
-                                }, {
                                     JC_FOUND: {
                                         $like: searchKey
                                     }
