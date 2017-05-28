@@ -77,24 +77,16 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                         delete  result.rows[i]["driver.DRIVER_RULES_DATE"];
                         delete  result.rows[i]["driver.DRIVER_CATEGORY"];
                     }
-                    if (options.search.value.length > 0)
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.rows.length
-                        });
-                    else
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.count
-                        });
+                    let records = options.search.value.length ? result.rows.length : result.count;
+
+                    resolve({
+                        "data": result.rows,
+                        "options": [],
+                        "files": [],
+                        "draw": options.draw,
+                        "recordsTotal": result.count,
+                        "recordsFiltered": records
+                    });
                 }).catch(reject);
             });
         }

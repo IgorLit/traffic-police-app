@@ -84,24 +84,16 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                         delete  result.rows[i]["mark.MARK_NAME"];
                         delete  result.rows[i]["driver.DRIVER_FIO"];
                     }
-                    if (options.search.value.length > 0)
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.rows.length
-                        });
-                    else
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.count
-                        });
+                    let records = options.search.value.length ? result.rows.length : result.count;
+
+                    resolve({
+                        "data": result.rows,
+                        "options": [],
+                        "files": [],
+                        "draw": options.draw,
+                        "recordsTotal": result.count,
+                        "recordsFiltered": records
+                    });
                 }).catch(reject);
             });
         }

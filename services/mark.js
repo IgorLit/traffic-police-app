@@ -85,28 +85,16 @@ module.exports = (markRepository, firmRepository, countryRepository, errors) => 
                         delete  result.rows[i]["country.COUNTRY_NAME"];
                         delete  result.rows[i]["firm.FIRM_NAME"];
                     }
-                    if (options.search.value.length > 0) {
+                    let records = options.search.value.length ? result.rows.length : result.count;
 
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.rows.length
-                        });
-                    }
-                    else {
-
-                        resolve({
-                            "data": result.rows,
-                            "options": [],
-                            "files": [],
-                            "draw": options.draw,
-                            "recordsTotal": result.count,
-                            "recordsFiltered": result.count
-                        });
-                    }
+                    resolve({
+                        "data": result.rows,
+                        "options": [],
+                        "files": [],
+                        "draw": options.draw,
+                        "recordsTotal": result.count,
+                        "recordsFiltered": records
+                    });
                 }).catch(reject);
             });
         }
