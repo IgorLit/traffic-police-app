@@ -7,7 +7,7 @@ module.exports = (Sequelize, sequelize) => {
             autoIncrement: true
         },
         DRIVER_FIO:{
-            type:Sequelize.CHAR(30),
+            type:Sequelize.CHAR(300),
             notNull:true
         },
         DRIVER_BIRTHDATE:{
@@ -15,7 +15,7 @@ module.exports = (Sequelize, sequelize) => {
             notNull:true
         },
         DRIVER_ADRESS: {
-            type:Sequelize.CHAR(30),
+            type:Sequelize.CHAR(300),
             notNull:true
         },
         DRIVER_PASSPORT:{
@@ -23,7 +23,7 @@ module.exports = (Sequelize, sequelize) => {
             notNull:true
         },
         DRIVER_RULES:{
-            type:Sequelize.CHAR(12),
+            type:Sequelize.CHAR(100),
             notNull:true
         },
         DRIVER_RULES_DATE:{

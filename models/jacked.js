@@ -24,7 +24,7 @@ module.exports = (Sequelize, sequelize) => {
             allowNull: false
         },
         JC_FOUND_DATE:{
-            type:Sequelize.CHAR(12),
+            type:Sequelize.CHAR(20),
         },
         DRIVER_RULES_DATE:{
             type:Sequelize.DATEONLY,

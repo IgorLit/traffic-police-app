@@ -7,7 +7,7 @@ module.exports = (Sequelize, sequelize) => {
             autoIncrement: true
         },
         FIRM_NAME:{
-            type:Sequelize.CHAR(30),
+            type:Sequelize.CHAR(300),
         }
     });
 };
