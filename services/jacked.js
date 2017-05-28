@@ -55,14 +55,6 @@ module.exports = (jackedRepository, amRepository, driverRepository, errors) => {
                         order: [[orderColumn, options.order[0].dir.toUpperCase()]],
                         raw: true,
                         where: {
-                            $or: [
-                                {
-                                    JC_FOUND: {
-                                        $like: searchKey
-                                    }
-                                }
-
-                            ]
                         },
                         include: [
                             {
