@@ -16,6 +16,7 @@
     "/jacked.html": ["user", "admin"],
     "/mark.html": ["user", "admin"],
     "/panel.html": ["user", "admin"],
+    "/docs.html": "*",
     "/users": ["admin"]
   },
   "POST" : {
