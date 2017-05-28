@@ -68,18 +68,6 @@
                $.notify("Fill all fields correctly","warn");
                return;
            }
-           /*$.post("api/session",{
-               "email": $("#email").val(),
-               "password":  $("#password").val()
-           }, function (data) {
-           })
-               .done(function () {
-                   window.location.replace("/");
-               })
-               .fail(function (error) {
-                   $.notify("Invalid Credential");
-               })*/
-
            $.ajax({
                url: "api/session",
                type: "POST",

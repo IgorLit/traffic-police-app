@@ -92,7 +92,10 @@
             var table = $('#example').DataTable({
                 dom: "Bfrtlip",
                 "serverSide": true,
-                ajax: "/api/ams",
+                ajax: {
+                    "url": "/api/ams",
+                    "type": "GET"
+                },
 
                 columns: [
                     {data: "AM_REG_NUMBER"},
