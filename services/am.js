@@ -59,31 +59,7 @@ module.exports = (amRepository, markRepository, driverRepository, errors) => {
                         raw: true,
                         where: {
                             $or: [
-                                {
-                                    AM_REG_NUMBER: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    AM_BODY_NUMBER: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    AM_ENGINE_NUMBER: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    AM_TECHPASSPORT_NUMBER: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    AM_BIRTHDATE: {
-                                        $like: searchKey
-                                    }
-                                }, {
-                                    AM_REGISTRATION_DATE: {
-                                        $like: searchKey
-                                    }
-                                }, {
+                                 {
                                     AM_COLOR: {
                                         $like: searchKey
                                     }
